@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="InformationBoard.View.LastFlightControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:InformationBoard.View"
+             xmlns:function="clr-namespace:InformationBoard.Function"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="470">
+    <UserControl.Resources>
+        <function:CityConverter x:Key="CityConverter"/>
+    </UserControl.Resources>
+    <Border Width="450" Height="30" Margin="10" BorderThickness="1" BorderBrush="#E5F5DEB3" Background="#FF0F93FF">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="375"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" BorderThickness="1" BorderBrush="#3FFFFFFF">
+                <TextBlock Grid.Column="0" Text="Рейс" Padding="5" Foreground="White" TextAlignment="Center"/>
+            </Border>
+            <Grid Grid.Column="1" Margin="{Binding Margin}" Opacity="{Binding Opacity}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" BorderThickness="1" BorderBrush="#3FFFFFFF">
+                    <TextBlock DataContext="{Binding Flight}" Padding="5" Foreground="White" TextAlignment="Center">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource CityConverter}">
+                                <Binding Path="City" />
+                                <Binding Path="Direction" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Border>
+                <Border Grid.Column="1" BorderThickness="1" BorderBrush="#3FFFFFFF">
+                    <TextBlock Padding="5" Foreground="White" TextAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value=""/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Flight.Direction}" Value="0">
+                                        <Setter Property="Text" Value="Прилетел" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Flight.Direction}" Value="1">
+                                        <Setter Property="Text" Value="Вылетел" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Border>
+                <Border Grid.Column="2" BorderThickness="1" BorderBrush="#3FFFFFFF">
+                    <TextBlock Text="{Binding Flight.Date, StringFormat=HH:mm:ss}" Padding="5" Foreground="White" TextAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
